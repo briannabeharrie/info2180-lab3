@@ -1,13 +1,16 @@
 let currentPlayer = 'X';
 const players = ['X', 'O'];
-const squares = document.querySelectorAll('.square'); // Declare squares in a global scope
+const squares = document.querySelectorAll('.square'); 
 
 // Exercise 1
 document.addEventListener('DOMContentLoaded', function () {
-  squares.forEach((square, index) => {
-    square.classList.add('square');
+    const squares = document.querySelectorAll('#board > div');
+  
+    squares.forEach((square) => {
+      square.classList.add('square');
+    });
   });
-});
+  
 
 // Exercise 2
 document.addEventListener('DOMContentLoaded', function () {
