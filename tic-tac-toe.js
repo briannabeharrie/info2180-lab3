@@ -80,6 +80,7 @@ document.addEventListener('DOMContentLoaded', function () {
       squares.forEach((square) => {
         square.textContent = '';
         square.className = 'square';
+        console.log('New Game button clicked');
       });
   
       document.getElementById('status').textContent = 'Move your mouse over a square and click to play an X or an O.';
