@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let currentPlayer = 'X';
     let moveCount = 0;
     let gameEnded = false;
-
+  
     function checkWinner() {
       const winPatterns = [
         [0, 1, 2],
@@ -26,9 +26,10 @@ document.addEventListener('DOMContentLoaded', function () {
         ) {
           document.getElementById('status').textContent = `Congratulations! ${boardDivs[a].textContent} is the Winner!`;
           document.getElementById('status').classList.add('you-won');
-          // Disable further moves
           boardDivs.forEach((square) => {
             square.removeEventListener('click', clickHandler);
+            square.removeEventListener('mouseenter', hoverInHandler);
+            square.removeEventListener('mouseleave', hoverOutHandler);
           });
           gameEnded = true;
           return;
@@ -52,15 +53,28 @@ document.addEventListener('DOMContentLoaded', function () {
         }
       }
     }
-
+  
+    function hoverInHandler() {
+      if (!this.classList.contains('X') && !this.classList.contains('O')) {
+        this.classList.add('hover');
+      }
+    }
+  
+    function hoverOutHandler() {
+      this.classList.remove('hover');
+    }
+  
     boardDivs.forEach((square) => {
       square.addEventListener('click', clickHandler);
+      square.addEventListener('mouseenter', hoverInHandler);
+      square.addEventListener('mouseleave', hoverOutHandler);
     });
-
+  
     newGameButton.addEventListener('click', function () {
       boardDivs.forEach((square) => {
         square.textContent = '';
         square.className = 'square';
+        square.classList.remove('hover'); // Remove hover class on reset
       });
   
       document.getElementById('status').textContent = 'Move your mouse over a square and click to play an X or an O.';
@@ -68,9 +82,12 @@ document.addEventListener('DOMContentLoaded', function () {
       currentPlayer = 'X';
       moveCount = 0;
       gameEnded = false;
-
+  
       boardDivs.forEach((square) => {
         square.addEventListener('click', clickHandler);
+        square.addEventListener('mouseenter', hoverInHandler);
+        square.addEventListener('mouseleave', hoverOutHandler);
       });
     });
   });
+  
