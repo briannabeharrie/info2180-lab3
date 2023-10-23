@@ -73,9 +73,9 @@ document.addEventListener('DOMContentLoaded', function () {
             if (!square.textContent) {
                 square.textContent = currentPlayer;
                 square.classList.add(currentPlayer);
-                checkWinner();
                 currentPlayer = players[(players.indexOf(currentPlayer) + 1) % players.length];
-            };
+                checkWinner();
+            } 
         });
     });
 });
