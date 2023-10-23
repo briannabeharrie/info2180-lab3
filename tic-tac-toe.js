@@ -74,6 +74,7 @@ function checkWinner() {
 //Exercise 5
 document.addEventListener('DOMContentLoaded', function () {
     const newGameButton = document.querySelector('.btn');
+    const squares = document.querySelectorAll('.square');
   
     newGameButton.addEventListener('click', function () {
       squares.forEach((square) => {
@@ -85,7 +86,12 @@ document.addEventListener('DOMContentLoaded', function () {
       document.getElementById('status').classList.remove('you-won');
       currentPlayer = 'X';
     });
+    squares.forEach((square, index) => {
+      square.addEventListener('click', function () {
+      });
+    });
   });
+  
 //Exercise 6
 document.addEventListener('DOMContentLoaded', function () {
     const squares = document.querySelectorAll('.square');
