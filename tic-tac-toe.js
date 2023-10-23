@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', function () {
       square.classList.add('square');
     });
   });
-  
 
 // Exercise 2
 document.addEventListener('DOMContentLoaded', function () {
