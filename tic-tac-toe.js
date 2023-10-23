@@ -1,103 +1,92 @@
-//Exercise 1
 document.addEventListener('DOMContentLoaded', function () {
-    const squares = document.querySelectorAll('.square');
-
-    squares.forEach((square, index) => {
-      square.classList.add('square');
-    });
-  });
-//Exercise 2
-let currentPlayer ='X';
-const players =['X','O'];
-document.addEventListener('DOMContentLoaded',function(){
-    const squares =document.querySelectorAll('.square');
-    squares.forEach((square,index) => {
-        square.addEventListener('click',function(){
-            if (!square.textContent){
-                square.textContent = currentPlayer;
-                square.classList.add(currentPlayer);
-                currentPlayer = players[(players.indexOf(currentPlayer) + 1) % players.length];
-            }
-        });
-    });
-});
-//Exercise 3
-document.addEventListener('DOMContentLoaded',function(){
-    const squares =document.querySelectorAll('.square');
-    squares.forEach((square)=> {
-        square.addEventListener('mouseenter',function(){
-            square.classList.add('hover');
-        });
-        square.addEventListener('mouseleave', function () {
-            square.classList.remove('hover');
+    const boardDivs = document.querySelectorAll('#board div');
+    const newGameButton = document.querySelector('.btn');
+    const players = ['X', 'O'];
+    let currentPlayer = 'X';
+    let moveCount = 0;
+    let gameEnded = false;
+  
+    function checkWinner() {
+      const winPatterns = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6],
+      ];
+      for (const pattern of winPatterns) {
+        const [a, b, c] = pattern;
+        if (
+          boardDivs[a].textContent &&
+          boardDivs[a].textContent === boardDivs[b].textContent &&
+          boardDivs[a].textContent === boardDivs[c].textContent
+        ) {
+          document.getElementById('status').textContent = `Congratulations! ${boardDivs[a].textContent} is the Winner!`;
+          document.getElementById('status').classList.add('you-won');
+          boardDivs.forEach((square) => {
+            square.removeEventListener('click', clickHandler);
+            square.removeEventListener('mouseenter', hoverInHandler);
+            square.removeEventListener('mouseleave', hoverOutHandler);
           });
-    });
-});
-//Exercise 4
-function checkWinner() {
-    const winPatterns = [
-      [0, 1, 2],
-      [3, 4, 5],
-      [6, 7, 8],
-      [0, 3, 6],
-      [1, 4, 7],
-      [2, 5, 8],
-      [0, 4, 8],
-      [2, 4, 6],
-    ];
-    for (const pattern of winPatterns) {
-      const [a, b, c] = pattern;
-      if (
-        squares[a].textContent &&
-        squares[a].textContent === squares[b].textContent &&
-        squares[a].textContent === squares[c].textContent
-      ) {
-        document.getElementById('status').textContent = `Congratulations! ${squares[a].textContent} is the Winner!`;
+          gameEnded = true;
+          return;
+        }
+      }
+      if (moveCount === 9) {
+        document.getElementById('status').textContent = "It's a Draw!";
         document.getElementById('status').classList.add('you-won');
+        gameEnded = true;
       }
     }
-  }
-  document.addEventListener('DOMContentLoaded', function () {
-    const squares = document.querySelectorAll('.square');
   
-    squares.forEach((square, index) => {
-      square.addEventListener('click', function () {
-        if (!square.textContent) {
-          square.textContent = currentPlayer;
-          square.classList.add(currentPlayer);
+    function clickHandler() {
+      if (!gameEnded && !this.textContent) {
+        this.textContent = currentPlayer;
+        this.classList.add(currentPlayer);
+        currentPlayer = players[(players.indexOf(currentPlayer) + 1) % players.length];
+        moveCount++;
+        if (moveCount >= 5) {
           checkWinner();
-          currentPlayer = players[(players.indexOf(currentPlayer) + 1) % players.length];
         }
-      });
+      }
+    }
+  
+    function hoverInHandler() {
+      if (!this.classList.contains('X') && !this.classList.contains('O')) {
+        this.classList.add('hover');
+      }
+    }
+  
+    function hoverOutHandler() {
+      this.classList.remove('hover');
+    }
+  
+    boardDivs.forEach((square) => {
+      square.addEventListener('click', clickHandler);
+      square.addEventListener('mouseenter', hoverInHandler);
+      square.addEventListener('mouseleave', hoverOutHandler);
     });
-  });
-//Exercise 5
-document.addEventListener('DOMContentLoaded', function () {
-    const newGameButton = document.querySelector('.btn');
   
     newGameButton.addEventListener('click', function () {
-      squares.forEach((square) => {
+      boardDivs.forEach((square) => {
         square.textContent = '';
         square.className = 'square';
+        square.classList.remove('hover'); // Remove hover class on reset
       });
   
       document.getElementById('status').textContent = 'Move your mouse over a square and click to play an X or an O.';
       document.getElementById('status').classList.remove('you-won');
       currentPlayer = 'X';
-    });
-  });
-//Exercise 6
-document.addEventListener('DOMContentLoaded', function () {
-    const squares = document.querySelectorAll('.square');
+      moveCount = 0;
+      gameEnded = false;
   
-    squares.forEach((square) => {
-      square.addEventListener('click', function () {
-        if (square.textContent === '') {
-          square.textContent = currentPlayer;
-          square.classList.add(currentPlayer);
-          checkWinner();
-          currentPlayer = players[(players.indexOf(currentPlayer) + 1) % players.length];
-        }
+      boardDivs.forEach((square) => {
+        square.addEventListener('click', clickHandler);
+        square.addEventListener('mouseenter', hoverInHandler);
+        square.addEventListener('mouseleave', hoverOutHandler);
       });
     });
   });
